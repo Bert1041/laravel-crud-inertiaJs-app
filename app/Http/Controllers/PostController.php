@@ -38,7 +38,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Post/Create');
+        return Inertia::render('Posts/Create');
     }
 
     /**
@@ -47,7 +47,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
         Post::create(
             Request::validate([
@@ -56,7 +56,7 @@ class PostController extends Controller
             ])
         );
 
-        return Redirect::route('posts.index');
+        return Redirect::route('posts.home');
     }
 
     /**
@@ -78,13 +78,14 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return Inertia::render('Post/Edit', [
+        return Inertia::render('Posts/Edit', [
             'post' => [
                 'id' => $post->id,
                 'title' => $post->title,
                 'description' => $post->description
             ]
         ]);
+
     }
 
     /**
@@ -94,7 +95,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Post $post)
     {
         $data = Request::validate([
                 'title' => ['required', 'max:90'],
@@ -103,7 +104,7 @@ class PostController extends Controller
         $post->update($data);
 
 
-        return Redirect::route('posts.index');
+        return Redirect::route('posts.home');
     }
 
     /**
@@ -115,6 +116,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return Redirect::route('posts.index');
+        return Redirect::route('posts.home');
     }
 }
